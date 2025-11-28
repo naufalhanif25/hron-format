@@ -201,8 +201,8 @@ This section displays the performance test results of HRON compared to other for
 ```bash
 HRON:  0.202 ms
 TOON:  0.418 ms
-JSON:  0.005 ms
-YAML:  0.019 ms
+JSON:  0.005 ms  # Faster, because it uses built-in functions
+YAML:  0.019 ms  # Faster, because it uses built-in functions
 XML:   0.340 ms
 ```
 
@@ -211,8 +211,8 @@ XML:   0.340 ms
 ```bash
 HRON:  0.035 ms
 TOON:  0.315 ms
-JSON:  0.002 ms
-YAML:  0.010 ms
+JSON:  0.002 ms  # Faster, because it uses built-in functions
+YAML:  0.010 ms  # Faster, because it uses built-in functions
 XML:   0.063 ms
 ```
 

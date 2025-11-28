@@ -172,9 +172,26 @@ The following example shows how to read and parse an HRON file into a JavaScript
 import { HRON } from "./src/hron";
 
 const hron = new HRON();
-const file = Bun.file("public/example.hron");
+const data = `
+data{users[{id,name,role,verified,hobbies[]}]}: {
+  [
+    {1,'Alice','admin',true,['sport','run','game']},
+    {2,'Bob','user',false,['swim','travel','code']}
+  ]
+}
+`
 
-console.log(hron.parse(await file.text()));
+console.log(hron.parse(data));
+// {
+//   object: {
+//     data: {
+//       users: [
+//         [Object ...], [Object ...]
+//       ],
+//     },
+//   },
+// } 
+
 ```
 
 ### Converting JavaScript Object to HRON
@@ -183,11 +200,19 @@ The following example shows how JavaScript object can be converted into an HRON 
 
 ```ts
 import { HRON } from "./src/hron";
-import data from "./public/example.json";
 
 const hron = new HRON();
+const data = {
+  data: {
+    users: [
+      { id: 1, name: "Alice", role: "admin", verified: false, hobbies: [ "sport", "run", "game" ] },
+      { id: 2, name: "Bob", role: "user", verified: false, hobbies: [ "swim", "travel", "code" ] }
+    ]
+  }
+}
 
 console.log(hron.translator.toHRON(data));
+// data{users[{id,name,role,verified,hobbies[]}]}: {[{1,'Alice','admin',false,['sport','run','game']},{2,'Bob','user',false,['swim','travel','code']}]}
 ```
 
 ---

@@ -50,6 +50,9 @@ export class HRON {
     // Determines if a string matches null literal
     private isNull = (input: string): boolean => input === "null";
 
+    // Check if the file extension is valid
+    private isExtValid = (input: string): boolean => input.split(".")[1] === "hron";
+
     // Token creation helpers
     private readonly createSymbolToken = (value: string): HRONToken => ({ type: "SYMBOL", value });
     private readonly createStringToken = (value: string): HRONToken => ({ type: "STRING", value });
@@ -129,11 +132,13 @@ export class HRON {
 
     // Saves HRON data to a file
     public save = async (data: any, filePath: string, options?: { mode?: number, createPath?: boolean }): Promise<number> => {
+        if (!this.isExtValid(filePath)) throw new Error("Invalid file extension: only '.hron' files are supported.");
         return await Bun.write(filePath, data, options);
     };
 
     // Loads a HRON file and parses it
     public open = async (filePath: string, options: string = "o", fileOptions?: BlobPropertyBag): Promise<HRONParseType> => {
+        if (!this.isExtValid(filePath)) throw new Error("Invalid file extension: only '.hron' files are supported.");
         const file = Bun.file(filePath, fileOptions);
         const data = await file.text();
         return this.parse(data, options);

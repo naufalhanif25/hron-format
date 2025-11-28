@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data>
+    <users>
+        <id>1</id>
+        <name>Alice</name>
+        <role>admin</role>
+        <verified>false</verified>
+        <hobbies>sport</hobbies>
+        <hobbies>run</hobbies>
+        <hobbies>game</hobbies>
+    </users>
+    <users>
+        <id>2</id>
+        <name>Bob</name>
+        <role>user</role>
+        <verified>false</verified>
+        <hobbies>swim</hobbies>
+        <hobbies>travel</hobbies>
+        <hobbies>code</hobbies>
+    </users>
+</data>

@@ -1,0 +1,18 @@
+data:
+  users:
+    - id: 1
+      name: Alice
+      role: admin
+      verified: false
+      hobbies:
+        - sport
+        - run
+        - game
+    - id: 2
+      name: Bob
+      role: user
+      verified: false
+      hobbies:
+        - swim
+        - travel
+        - code

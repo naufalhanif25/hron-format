@@ -152,7 +152,7 @@ HRON expresses data structures through separate key and value declarations, ensu
 ```
 data{users[{id,name,role,verified,hobbies[]}]}: {
     [
-        {1,'Alice','admin',true,['sport','run','game']},
+        {1,'Alice','admin',false,['sport','run','game']},
         {2,'Bob','user',false,['swim','travel','code']}
     ]
 }
@@ -175,7 +175,7 @@ const hron = new HRON();
 const data = `
 data{users[{id,name,role,verified,hobbies[]}]}: {
   [
-    {1,'Alice','admin',true,['sport','run','game']},
+    {1,'Alice','admin',false,['sport','run','game']},
     {2,'Bob','user',false,['swim','travel','code']}
   ]
 }

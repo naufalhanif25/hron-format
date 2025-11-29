@@ -212,7 +212,19 @@ const data = {
 }
 
 console.log(hron.translator.toHRON(data));
-// data{users[{id,name,role,verified,hobbies[]}]}: {[{1,'Alice','admin',false,['sport','run','game']},{2,'Bob','user',false,['swim','travel','code']}]}
+// data{users[{id,name,role,verified,hobbies[]}]}: {
+//   [
+//     {
+//       1,'Alice','admin',false,[
+//         'sport','run','game'
+//       ]
+//     },{
+//       2,'Bob','user',false,[
+//         'swim','travel','code'
+//       ]
+//     }
+//   ]
+// }
 ```
 
 ---

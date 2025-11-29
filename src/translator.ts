@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { type HRONASTDocumentNode, type HRONASTKeyNode, type HRONASTValueNode, type HRONASTKeyValueNodeType } from "./builder";
 import { type HRONValueType } from "./hron"
 
@@ -12,9 +13,15 @@ export class HRONASTTranslator {
     
     // Returns true if the given type represents an HRON object
     private isObject = (input: HRONASTKeyValueNodeType): boolean => input === "Object";
+
+    // Returns true if the given string is an object
+    private isStringObject = (input: string): boolean => input.startsWith("{") && input.endsWith("}");
     
     // Returns true if the given type represents an HRON list
     private isList = (input: HRONASTKeyValueNodeType): boolean => input === "List";
+
+    // Returns true if the given string is a list
+    private isStringList = (input: string): boolean => input.startsWith("[") && input.endsWith("]");
     
     // Returns true if the type is either Object or List
     private isObjectList = (input: HRONASTKeyValueNodeType): boolean => this.isObject(input) || this.isList(input);
@@ -106,11 +113,11 @@ export class HRONASTTranslator {
             if (object === undefined) throw new Error(`Undefined: key '${name}' is undefined`);
             if (Array.isArray(object)) {
                 const hronKeys = this.objectToHRONKeys(object[0]);
-                return name ? `${name}[${hronKeys}]` : `[${hronKeys}]`;
+                return name ? `${chalk.yellow(name)}[${hronKeys}]` : `[${hronKeys}]`;
             }
             if (object !== null && typeof object === "object") {
-                const keys = Object.keys(object).map(key => this.objectToHRONKeys(object[key], key)).join(",");
-                return name ? `${name}{${keys}}` : `{${keys}}`;
+                const keys = Object.keys(object).map(key => this.objectToHRONKeys(object[key], chalk.yellow(key))).join(",");
+                return name ? `${chalk.yellow(name)}{${keys}}` : `{${keys}}`;
             }
 
             return name ?? "";
@@ -119,19 +126,23 @@ export class HRONASTTranslator {
     };
 
     // Converts a JavaScript object into its HRON Value representation
-    private objectToHRONValues = (object: any): string | undefined => {
+    private objectToHRONValues = (object: any, indent: number = 2, level: number = 0): string | undefined => {
         try {
             if (object === undefined) throw new Error(`Undefined: values cannot be converted`);
             if (Array.isArray(object)) {
-                const items = object.map(value => this.objectToHRONValues(value)).join(",");
-                return `[${items}]`;
+                if (object.length === 0) return "[]";
+                const items = object.map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
+                const whitespace = " ".repeat(indent * level);
+                return this.isStringList(items) ? `[${items}]` : `[\n${whitespace}${items}\n${whitespace}]`;
             }
             if (object !== null && typeof object === "object") {
-                const values = Object.values(object).map(value => this.objectToHRONValues(value)).join(",");
-                return `{${values}}`;
+                if (object.length === 0) return "{}";
+                const values = Object.values(object).map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
+                const whitespace = " ".repeat(indent * level);
+                return this.isStringObject(values) ? `{${values}}` : `{\n${whitespace}${values}\n${whitespace}}`;
             }
-            if (typeof object === "string") return `'${object}'`;
-            return String(object);
+            if (typeof object === "string") return chalk.green(`'${object}'`);
+            return chalk.magenta(String(object));
         }
         catch (error) { throw new Error(`Invalid HRON values`) }
     };
@@ -144,9 +155,9 @@ export class HRONASTTranslator {
     };
 
     // Converts a JavaScript object into a full HRON string
-    public toHRON = (object: any): string => {
+    public toHRON = (object: any, indent: number = 2): string => {
         const keys = this.objectToHRONKeys(object);
-        const values = this.objectToHRONValues(object);
+        const values = this.objectToHRONValues(object, indent);
         return `${this.sliceBracket(keys || "")}: ${this.sliceBracket(values || "")}`;
     };
 }

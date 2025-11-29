@@ -132,14 +132,12 @@ export class HRONASTTranslator {
             if (Array.isArray(object)) {
                 if (object.length === 0) return "[]";
                 const items = object.map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
-                const whitespace = " ".repeat(indent * level);
-                return this.isStringList(items) ? `[${items}]` : `[\n${whitespace}${items}\n${whitespace}]`;
+                return this.isStringList(items) || indent < 1 ? `[${items}]` : `[\n${" ".repeat(indent * level)}${items}\n${" ".repeat(indent * (level - 1))}]`;
             }
             if (object !== null && typeof object === "object") {
                 if (object.length === 0) return "{}";
                 const values = Object.values(object).map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
-                const whitespace = " ".repeat(indent * level);
-                return this.isStringObject(values) ? `{${values}}` : `{\n${whitespace}${values}\n${whitespace}}`;
+                return this.isStringObject(values) || indent < 1 ? `{${values}}` : `{\n${" ".repeat(indent * level)}${values}\n${" ".repeat(indent * (level - 1))}}`;
             }
             if (typeof object === "string") return chalk.green(`'${object}'`);
             return chalk.magenta(String(object));

@@ -144,3 +144,6 @@ export class HRON {
         return this.parse(data, options);
     };
 }
+
+// Main HRON object
+export const hron = new HRON();

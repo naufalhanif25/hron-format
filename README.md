@@ -180,16 +180,14 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 }
 `
 
-console.log(hron.parse(data));
+console.log(hron.parse(data).object);
 // {
-//   object: {
-//     data: {
-//       users: [
-//         [Object ...], [Object ...]
-//       ],
-//     },
+//   data: {
+//     users: [
+//       [Object ...], [Object ...]
+//     ],
 //   },
-// } 
+// }
 
 ```
 
@@ -200,6 +198,7 @@ The following example shows how JavaScript object can be converted into an HRON 
 ```ts
 import { hron } from "./src/hron";
 
+// Input must contain a single root object that holds all nested data.
 const data = {
   data: {
     users: [

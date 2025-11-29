@@ -1,7 +1,6 @@
-import { HRON } from "./src/hron";
+import { hron } from "./src/hron";
 
 // HRON object
-const hron = new HRON();
 const file = Bun.file("public/example.hron");
 
 // Parsing HRON into an JavaScript Object

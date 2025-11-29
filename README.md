@@ -169,9 +169,8 @@ This section provides a basic example of how HRON is used in a JavaScript or Typ
 The following example shows how to read and parse an HRON file into a JavaScript object.
 
 ```ts
-import { HRON } from "./src/hron";
+import { hron } from "./src/hron";
 
-const hron = new HRON();
 const data = `
 data{users[{id,name,role,verified,hobbies[]}]}: {
   [
@@ -199,9 +198,8 @@ console.log(hron.parse(data));
 The following example shows how JavaScript object can be converted into an HRON representation.
 
 ```ts
-import { HRON } from "./src/hron";
+import { hron } from "./src/hron";
 
-const hron = new HRON();
 const data = {
   data: {
     users: [

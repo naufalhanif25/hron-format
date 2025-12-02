@@ -60,7 +60,7 @@ export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
         let position = 0;
 
         while (position < input.length) {
-            let char = input[position]!;
+            const char = input[position]!;
             if (this.isWhitespace(char)) {
                 position++;
                 continue;

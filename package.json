@@ -7,16 +7,23 @@
   },
   "module": "index.ts",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@eslint/js": "^9.39.1",
+    "@types/bun": "latest",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.48.1"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "start": "bun run index.ts",
-    "bench": "bun run test/benchmark.test.ts"
+    "bench": "bun run test/benchmark.test.ts",
+    "lint": "eslint ."
   },
   "type": "module",
   "dependencies": {

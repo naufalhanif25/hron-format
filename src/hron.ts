@@ -5,17 +5,10 @@ export type HRONTokenType = "IDENT" | "NUMBER" | "STRING" | "BOOL" | "SYMBOL" | 
 export type HRONValueType = string | number | boolean | null;
 export type HRONToken = { type: HRONTokenType, value: HRONValueType };
 export type HRONParseType = { tokens?: HRONToken[], document?: HRONASTDocumentNode, object?: any };
+export type HRONConstructor<T = {}> = new (...args: any[]) => T;
 
-export class HRON {
-    private validSymbols: Set<string>;
-    public builder: HRONASTBuilder;
-    public translator: HRONASTTranslator;
-
-    constructor () {
-        this.validSymbols = new Set(["{", "}", "[", "]", ",", ".", ":"]);
-        this.builder = new HRONASTBuilder();
-        this.translator = new HRONASTTranslator();
-    }
+export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
+    private validSymbols: Set<string> = new Set(["{", "}", "[", "]", ",", ".", ":"]);
 
     // Returns ASCII code of a character or value depending on input type
     private readonly inputSelector = (input: string | number, index: number): number => typeof input === "string" ? input.charCodeAt(index) : input;
@@ -113,36 +106,10 @@ export class HRON {
     };
 
     // Parses text input into tokens, AST, and/or object depending on selected options
-    public parse = (input: string, options: string = "o"): HRONParseType | any => {
-        const optionList = new Set(options.split(""));
-        const outputs: HRONParseType = {};
-        let tokens: HRONToken[] | null = this.tokenize(input);
-        if (optionList.has("t")) outputs.tokens = tokens;
+    public parse = (input: string): HRONParseType | any => this.toObject(this.build(this.tokenize(input)));
 
-        let document: HRONASTDocumentNode | null = this.builder.build(tokens);
-        tokens = null;
-        if (optionList.has("d")) outputs.document = document;
-        
-        let object: any = this.translator.toObject(document);
-        document = null
-        if (optionList.has("o")) outputs.object = object;
-        object = null;
-        return outputs;
-    };
-
-    // Saves HRON data to a file
-    public save = async (data: any, filePath: string, options?: { mode?: number, createPath?: boolean }): Promise<number> => {
-        if (!this.isExtValid(filePath)) throw new Error("Invalid file extension: only '.hron' files are supported.");
-        return await Bun.write(filePath, data, options);
-    };
-
-    // Loads a HRON file and parses it
-    public open = async (filePath: string, options: string = "o", fileOptions?: BlobPropertyBag): Promise<HRONParseType> => {
-        if (!this.isExtValid(filePath)) throw new Error("Invalid file extension: only '.hron' files are supported.");
-        const file = Bun.file(filePath, fileOptions);
-        const data = await file.text();
-        return this.parse(data, options);
-    };
+    // Converts a JavaScript object into a full HRON string
+    public stringify = (object: any, indent: number = 2): string => this.toHRON(object, indent);
 }
 
 // Main HRON object

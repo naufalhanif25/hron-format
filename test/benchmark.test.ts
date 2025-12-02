@@ -102,31 +102,31 @@ for (let n = 0; n < iter; n++) {
 
     // HRON
     startTime = performance.now();
-    hron.translator.toHRON(data.data);
+    hron.stringify(data);
     endTime = performance.now();
     hronEncodeTime.push(endTime - startTime);
 
     // TOON
     startTime = performance.now();
-    toonEncode(data.data);
+    toonEncode(data);
     endTime = performance.now();
     toonEncodeTime.push(endTime - startTime);
 
     // JSON
     startTime = performance.now();
-    JSON.stringify(data.data);
+    JSON.stringify(data);
     endTime = performance.now();
     jsonEncodeTime.push(endTime - startTime);
 
     // YAML
     startTime = performance.now();
-    YAML.stringify(data.data);
+    YAML.stringify(data);
     endTime = performance.now();
     yamlEncodeTime.push(endTime - startTime);
 
     // XML
     startTime = performance.now();
-    xmlBuilder.build(data.data);
+    xmlBuilder.build(data);
     endTime = performance.now();
     xmlEncodeTime.push(endTime - startTime);
 }

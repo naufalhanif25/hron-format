@@ -49,7 +49,7 @@ export function HRONASTTranslator<TBase extends HRONConstructor>(Base: TBase) {
         // Reconstructs a JavaScript object from flattened HRON key and value hierarchies
         private buildObject = (keys: HRONKeysHierarchyType[], values: HRONValuesHierarchyType[]): any => {
             if (keys.length === 0) return {};
-            let root: any = {};
+            const root: any = {};
             const keyStack: { level: number; node: any }[] = [{ level: 0, node: root }];
             const valueStack: { level: number; node: any }[] = [{ level: 0, node: root }];
             const keyLevels: Record<number, HRONKeysHierarchyType[]> = {};

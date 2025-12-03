@@ -142,8 +142,8 @@ console.log(`${chalk.bold("XML  :")}  ${chalk.yellow(calcAverage(xmlEncodeTime).
 console.log(chalk.bold.green("[ File Size ]"));
 console.log(chalk.gray("\u2500".repeat(35)));
 
-console.log(`${chalk.bold("HRON :")} ${getFileSize(hronFile.size)}`);
-console.log(`${chalk.bold("TOON :")} ${getFileSize(toonFile.size)}`);
-console.log(`${chalk.bold("JSON :")} ${getFileSize(jsonFile.size)}`);
-console.log(`${chalk.bold("YAML :")} ${getFileSize(yamlFile.size)}`);
-console.log(`${chalk.bold("XML  :")} ${getFileSize(xmlFile.size)}`);
+console.log(`${chalk.bold("HRON :")}  ${getFileSize(hronFile.size)}`);
+console.log(`${chalk.bold("TOON :")}  ${getFileSize(toonFile.size)}`);
+console.log(`${chalk.bold("JSON :")}  ${getFileSize(jsonFile.size)}`);
+console.log(`${chalk.bold("YAML :")}  ${getFileSize(yamlFile.size)}`);
+console.log(`${chalk.bold("XML  :")}  ${getFileSize(xmlFile.size)}`);

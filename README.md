@@ -252,32 +252,35 @@ This section displays the performance test results of HRON compared to other for
 ### Decode Speed (10 iterations)
 
 ```bash
-HRON:  0.218 ms
-TOON:  0.424 ms
-JSON:  0.006 ms  # Faster, because it uses built-in functions
-YAML:  0.023 ms  # Faster, because it uses built-in functions
-XML:   0.339 ms
+HRON :  0.218 ms
+TOON :  0.424 ms
+JSON :  0.006 ms
+YAML :  0.023 ms
+XML  :  0.339 ms
 ```
 
 ### Encode Speed (10 iterations)
 
 ```bash
-HRON:  0.118 ms
-TOON:  0.380 ms
-JSON:  0.002 ms  # Faster, because it uses built-in functions
-YAML:  0.016 ms  # Faster, because it uses built-in functions
-XML:   0.077 ms
+HRON :  0.118 ms
+TOON :  0.380 ms
+JSON :  0.002 ms
+YAML :  0.016 ms
+XML  :  0.077 ms
 ```
 
 ### File Size
 
 ```bash
-HRON: 176 B
-TOON: 222 B
-JSON: 620 B
-YAML: 273 B
-XML:  511 B
+HRON :  176 B
+TOON :  222 B
+JSON :  620 B
+YAML :  273 B
+XML  :  511 B
 ```
+
+> [!NOTE]
+> JSON and YAML are faster because they rely on highly optimized, native parsing and serialization routines built directly into widely used runtime libraries.
 
 **Summary:** HRON is faster at encoding and decoding than some other formats, and produces smaller output compared to other formats.
 

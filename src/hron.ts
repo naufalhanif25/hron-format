@@ -1,5 +1,5 @@
 import { HRONASTBuilder, type HRONASTDocumentNode } from "./builder";
-import { HRONASTTranslator } from "./translator";
+import { HRONASTTranslator, type HRONParseOptions } from "./translator";
 
 export type HRONTokenType = "IDENT" | "NUMBER" | "STRING" | "BOOL" | "SYMBOL" | "NULL";
 export type HRONValueType = string | number | boolean | null;
@@ -42,9 +42,6 @@ export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
 
     // Determines if a string matches null literal
     private isNull = (input: string): boolean => input === "null";
-
-    // Check if the file extension is valid
-    private isExtValid = (input: string): boolean => input.split(".")[1] === "hron";
 
     // Token creation helpers
     private readonly createSymbolToken = (value: string): HRONToken => ({ type: "SYMBOL", value });
@@ -89,7 +86,8 @@ export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
                 continue;
             }
             if (this.isLetter(char)) {
-                let index = position, start = index;
+                let index = position;
+                const start = index;
                 while (index < input.length && this.isLetterDigit(input[index]!)) index++;
                 const identString = input.slice(start, index);
                 if (this.isBool(identString)) tokens.push(this.createBoolToken(identString === "true"));
@@ -105,11 +103,11 @@ export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
         return tokens;
     };
 
-    // Parses text input into tokens, AST, and/or object depending on selected options
+    // Converts a full HRON string into a JavaScript object
     public parse = (input: string): HRONParseType | any => this.toObject(this.build(this.tokenize(input)));
 
     // Converts a JavaScript object into a full HRON string
-    public stringify = (object: any, indent: number = 2): string => this.toHRON(object, indent);
+    public stringify = (object: any, options: HRONParseOptions = { indent: 2, colorize: true }): string => this.toHRON(object, options);
 }
 
 // Main HRON object

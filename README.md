@@ -8,9 +8,10 @@ HRON (Hierarchical Reference Object Notation) is a structured text format design
 
 1. [Why HRON?](#why-hron)
 2. [Syntax Comparison Examples](#syntax-comparison-examples)
-3. [Usage in JavaScript / TypeScript](#usage-in-javascript--typescript)
-4. [Benchmark Results](#benchmark-results)
-5. [License](#license)
+3. [Usage of CLI Tool](#usage-of-cli-tool)
+4. [Usage in JavaScript / TypeScript](#usage-in-javascript--typescript)
+5. [Benchmark Results](#benchmark-results)
+6. [License](#license)
 
 ---
 
@@ -160,6 +161,22 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 
 ---
 
+## Usage of CLI Tool
+
+This section provides a basic example of how the CLI-based HRON tool is used.
+
+```shell
+# Encode JavaScript objects into HRON string
+hron --encode data.json data.hron
+# or by using pipe from stdin
+cat data.json | hron --encode
+
+# Decode HRON string into JavaScript objects
+hron --decode data.hron data.json
+# or by using pipe from stdin
+cat data.hron | hron --decode
+```
+
 ## Usage in JavaScript / TypeScript
 
 This section provides a basic example of how HRON is used in a JavaScript or TypeScript environment.
@@ -208,7 +225,7 @@ const data = {
   }
 }
 
-console.log(hron.translator.toHRON(data));
+console.log(hron.stringify(data));
 // data{users[{id,name,role,verified,hobbies[]}]}: {
 //   [
 //     {

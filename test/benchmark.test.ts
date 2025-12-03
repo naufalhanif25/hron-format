@@ -1,12 +1,13 @@
 import { HRON } from "../src/hron";
 import { decode as toonDecode, encode as toonEncode } from "@toon-format/toon";
 import data from "../public/example.json";
+import chalk from "chalk";
 import { YAML } from "bun";
 import { XMLParser, XMLBuilder } from "fast-xml-parser";
 
 const getFileSize = (bytes: number, kilo: number = 1024, sizes: string[] = ["B", "KB", "MB"]): string => {
     const iter = Math.floor(Math.log(bytes) / Math.log(kilo));
-    return `${parseFloat((bytes / Math.pow(kilo, iter)).toFixed(3))} ${sizes[iter]}`;
+    return `${chalk.yellow(parseFloat((bytes / Math.pow(kilo, iter)).toFixed(3)))} ${sizes[iter]}`;
 };
 
 const calcAverage = (data: number[]) => {
@@ -38,8 +39,8 @@ const yamlText = await yamlFile.text();
 const xmlText = await xmlFile.text();
 
 // Decode Speed Test
-console.log(`[ Decode Speed (${iter} iterations) ]`);
-console.log("-".repeat(60));
+console.log(chalk.bold.green(`[ Decode Speed (${iter} iterations) ]`));
+console.log(chalk.gray("\u2500".repeat(35)));
 
 const hronDecodeTime: number[] = [];
 const toonDecodeTime: number[] = [];
@@ -81,15 +82,15 @@ for (let n = 0; n < iter; n++) {
     xmlDecodeTime.push(endTime - startTime);
 }
 
-console.log(`HRON:  ${calcAverage(hronDecodeTime).toFixed(3)} ms`);
-console.log(`TOON:  ${calcAverage(toonDecodeTime).toFixed(3)} ms`);
-console.log(`JSON:  ${calcAverage(jsonDecodeTime).toFixed(3)} ms`);
-console.log(`YAML:  ${calcAverage(yamlDecodeTime).toFixed(3)} ms`);
-console.log(`XML:   ${calcAverage(xmlDecodeTime).toFixed(3)} ms\n`);
+console.log(`${chalk.bold("HRON :")}  ${chalk.yellow(calcAverage(hronDecodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("TOON :")}  ${chalk.yellow(calcAverage(toonDecodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("JSON :")}  ${chalk.yellow(calcAverage(jsonDecodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("YAML :")}  ${chalk.yellow(calcAverage(yamlDecodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("XML  :")}  ${chalk.yellow(calcAverage(xmlDecodeTime).toFixed(3))} ms\n`);
 
 // Encode Speed Test
-console.log(`[ Encode Speed (${iter} iterations) ]`);
-console.log("-".repeat(60));
+console.log(chalk.bold.green(`[ Encode Speed (${iter} iterations) ]`));
+console.log(chalk.gray("\u2500".repeat(35)));
 
 const hronEncodeTime: number[] = [];
 const toonEncodeTime: number[] = [];
@@ -131,18 +132,18 @@ for (let n = 0; n < iter; n++) {
     xmlEncodeTime.push(endTime - startTime);
 }
 
-console.log(`HRON:  ${calcAverage(hronEncodeTime).toFixed(3)} ms`);
-console.log(`TOON:  ${calcAverage(toonEncodeTime).toFixed(3)} ms`);
-console.log(`JSON:  ${calcAverage(jsonEncodeTime).toFixed(3)} ms`);
-console.log(`YAML:  ${calcAverage(yamlEncodeTime).toFixed(3)} ms`);
-console.log(`XML:   ${calcAverage(xmlEncodeTime).toFixed(3)} ms\n`);
+console.log(`${chalk.bold("HRON :")}  ${chalk.yellow(calcAverage(hronEncodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("TOON :")}  ${chalk.yellow(calcAverage(toonEncodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("JSON :")}  ${chalk.yellow(calcAverage(jsonEncodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("YAML :")}  ${chalk.yellow(calcAverage(yamlEncodeTime).toFixed(3))} ms`);
+console.log(`${chalk.bold("XML  :")}  ${chalk.yellow(calcAverage(xmlEncodeTime).toFixed(3))} ms\n`);
 
 // File Size Report
-console.log("[ File Size ]");
-console.log("-".repeat(60));
+console.log(chalk.bold.green("[ File Size ]"));
+console.log(chalk.gray("\u2500".repeat(35)));
 
-console.log(`HRON: ${getFileSize(hronFile.size)}`);
-console.log(`TOON: ${getFileSize(toonFile.size)}`);
-console.log(`JSON: ${getFileSize(jsonFile.size)}`);
-console.log(`YAML: ${getFileSize(yamlFile.size)}`);
-console.log(`XML:  ${getFileSize(xmlFile.size)}`);
+console.log(`${chalk.bold("HRON :")} ${getFileSize(hronFile.size)}`);
+console.log(`${chalk.bold("TOON :")} ${getFileSize(toonFile.size)}`);
+console.log(`${chalk.bold("JSON :")} ${getFileSize(jsonFile.size)}`);
+console.log(`${chalk.bold("YAML :")} ${getFileSize(yamlFile.size)}`);
+console.log(`${chalk.bold("XML  :")} ${getFileSize(xmlFile.size)}`);

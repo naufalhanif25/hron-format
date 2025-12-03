@@ -177,6 +177,8 @@ hron --decode data.hron data.json
 cat data.hron | hron --decode
 ```
 
+See `bin/hron` to download the hron cli tool executable or download it directly [here](https://github.com/naufalhanif25/hron-format/raw/refs/heads/main/bin/hron?download=).
+
 ## Usage in JavaScript / TypeScript
 
 This section provides a basic example of how HRON is used in a JavaScript or TypeScript environment.

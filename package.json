@@ -3,8 +3,9 @@
   "author": {
     "name": "Naufal Hanif",
     "email": "naufal.hanif2525@gmail.com",
-    "url": "https://github.com/naufalhanif25"
+    "url": "https://github.com/naufalhanif25/hron-format.git"
   },
+  "version": "0.0.1",
   "module": "index.ts",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -23,7 +24,10 @@
   "scripts": {
     "start": "bun run index.ts",
     "bench": "bun run test/benchmark.test.ts",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "cli": "bun run src/cli.ts",
+    "build": "bun build src/cli.ts --compile --outfile bin/hron",
+    "test": "bun test test/unit.test.ts"
   },
   "type": "module",
   "dependencies": {

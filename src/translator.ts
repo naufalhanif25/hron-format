@@ -4,6 +4,7 @@ import { type HRONValueType, type HRONConstructor } from "./hron"
 
 export type HRONKeysHierarchyType = { name: string; type: HRONASTKeyValueNodeType; level: number };
 export type HRONValuesHierarchyType = { type: HRONASTKeyValueNodeType; value: HRONValueType; level: number };
+export type HRONParseOptions = { indent: number; colorize: boolean };
 
 export function HRONASTTranslator<TBase extends HRONConstructor>(Base: TBase) {
     return class extends Base {
@@ -107,41 +108,41 @@ export function HRONASTTranslator<TBase extends HRONConstructor>(Base: TBase) {
         };
 
         // Converts a JavaScript object into its HRON Key representation
-        private objectToHRONKeys = (object: any, name?: string): string | undefined => {
+        private objectToHRONKeys = (object: any, name?: string, options: HRONParseOptions = { indent: 2, colorize: true }): string | undefined => {
             try {
                 if (object === undefined) throw new Error(`Undefined: key '${name}' is undefined`);
                 if (Array.isArray(object)) {
-                    const hronKeys = this.objectToHRONKeys(object[0]);
-                    return name ? `${chalk.yellow(name)}[${hronKeys}]` : `[${hronKeys}]`;
+                    const hronKeys = this.objectToHRONKeys(object[0], undefined, options);
+                    return name ? `${options.colorize ? chalk.yellow(name) : name}[${hronKeys}]` : `[${hronKeys}]`;
                 }
                 if (object !== null && typeof object === "object") {
-                    const keys = Object.keys(object).map(key => this.objectToHRONKeys(object[key], chalk.yellow(key))).join(",");
-                    return name ? `${chalk.yellow(name)}{${keys}}` : `{${keys}}`;
+                    const keys = Object.keys(object).map(key => this.objectToHRONKeys(object[key], options.colorize ? chalk.yellow(key) : key, options)).join(",");
+                    return name ? `${options.colorize ? chalk.yellow(name) : name}{${keys}}` : `{${keys}}`;
                 }
 
                 return name ?? "";
             }
-            catch (error) { throw new Error(`Invalid HRON Keys on key '${name}'`) }
+            catch { throw new Error(`Invalid HRON Keys on key '${name}'`) }
         };
 
         // Converts a JavaScript object into its HRON Value representation
-        private objectToHRONValues = (object: any, indent: number = 2, level: number = 0): string | undefined => {
+        private objectToHRONValues = (object: any, options: HRONParseOptions = { indent: 2, colorize: true }, level: number = 0): string | undefined => {
             try {
                 if (object === undefined) throw new Error(`Undefined: values cannot be converted`);
                 if (Array.isArray(object)) {
                     if (object.length === 0) return "[]";
-                    const items = object.map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
-                    return this.isStringList(items) || indent < 1 ? `[${items}]` : `[\n${" ".repeat(indent * level)}${items}\n${" ".repeat(indent * (level - 1))}]`;
+                    const items = object.map(value => this.objectToHRONValues(value, options, level + 1)).join(",");
+                    return this.isStringList(items) || options.indent < 1 ? `[${items}]` : `[\n${" ".repeat(options.indent * level)}${items}\n${" ".repeat(options.indent * (level - 1))}]`;
                 }
                 if (object !== null && typeof object === "object") {
                     if (object.length === 0) return "{}";
-                    const values = Object.values(object).map(value => this.objectToHRONValues(value, indent, level + 1)).join(",");
-                    return this.isStringObject(values) || indent < 1 ? `{${values}}` : `{\n${" ".repeat(indent * level)}${values}\n${" ".repeat(indent * (level - 1))}}`;
+                    const values = Object.values(object).map(value => this.objectToHRONValues(value, options, level + 1)).join(",");
+                    return this.isStringObject(values) || options.indent < 1 ? `{${values}}` : `{\n${" ".repeat(options.indent * level)}${values}\n${" ".repeat(options.indent * (level - 1))}}`;
                 }
-                if (typeof object === "string") return chalk.green(`'${object}'`);
-                return chalk.magenta(String(object));
+                if (typeof object === "string") return options.colorize ? chalk.green(`'${object}'`) : `'${object}'`;
+                return options.colorize ? chalk.magenta(String(object)) : String(object);
             }
-            catch (error) { throw new Error(`Invalid HRON values`) }
+            catch { throw new Error(`Invalid HRON values`) }
         };
 
         // Converts an AST Document node into a JavaScript object
@@ -152,9 +153,9 @@ export function HRONASTTranslator<TBase extends HRONConstructor>(Base: TBase) {
         };
 
         // Converts a JavaScript object into a full HRON string
-        protected toHRON = (object: any, indent: number = 2): string => {
-            const keys = this.objectToHRONKeys(object);
-            const values = this.objectToHRONValues(object, indent);
+        protected toHRON = (object: any, options: HRONParseOptions = { indent: 2, colorize: true }): string => {
+            const keys = this.objectToHRONKeys(object, undefined, options);
+            const values = this.objectToHRONValues(object, options);
             return `${this.sliceBracket(keys || "")}: ${this.sliceBracket(values || "")}`;
         };
     }

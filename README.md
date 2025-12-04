@@ -8,7 +8,7 @@ HRON (Hierarchical Reference Object Notation) is a structured text format design
 
 * [Why HRON?](#why-hron)
 * [Syntax Comparison Examples](#syntax-comparison-examples)
-* [Quick Start](#quick-start)
+* [Installation & Quick Start](#installation--quick-start)
 * [Benchmark Results](#benchmark-results)
 * [License](#license)
 
@@ -160,11 +160,22 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 
 ---
 
-## Quick Start
+## Installation & Quick Start
 
 ### CLI Tool
 
-This section provides a basic example of how the CLI-based HRON tool is used.
+Below is a simple guide to help you install and use the HRON CLI tool. Follow the installation step first, then try the encoding and decoding commands.
+
+#### Installation
+
+```shell
+chmod +x install.sh
+./install.sh bin/hron-linux
+```
+
+Make sure you have downloaded the installation script `install.sh`.
+
+#### Usage
 
 ```shell
 # Encode JavaScript objects into HRON string
@@ -178,7 +189,7 @@ hron --decode data.hron data.json
 cat data.hron | hron --decode
 ```
 
-See `bin` directory to download the hron cli tool executable.
+You can find the HRON CLI executables inside the `bin` directory.
 
 ### JavaScript / TypeScript
 

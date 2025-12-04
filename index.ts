@@ -1,1 +1,1 @@
-import { hron, HRON } from "./src/hron";
+import { hron } from "./src/hron";

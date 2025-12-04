@@ -1,6 +1,6 @@
 {
   "name": "hron-format",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Naufal Hanif",
     "email": "naufal.hanif2525@gmail.com",
@@ -34,7 +34,13 @@
     "import": "./dist/index.mjs"
   },
   "description": "HRON (Hierarchical Reference Object Notation) is a structured text format focused on being readable, compact, and fast to parse.",
-  "keywords": ["hron", "tokenization", "serialization", "data-format", "object-notation"],
+  "keywords": [
+    "hron",
+    "tokenization",
+    "serialization",
+    "data-format",
+    "object-notation"
+  ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"

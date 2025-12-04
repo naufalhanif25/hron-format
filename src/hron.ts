@@ -103,10 +103,31 @@ export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
         return tokens;
     };
 
-    // Converts a full HRON string into a JavaScript object
+    /**
+     * Parses a HRON-formatted string into a JavaScript object.
+     *
+     * @example
+     * const data = `data{users[{id,name,role,verified,hobbies[]}]}: {[{1,'Alice','admin',false,['sport','run','game']},{2,'Bob','user',false,['swim','travel','code']}]}`
+     * console.log(hron.parse(data).object);
+     * 
+     * @param {string} input - The HRON string to parse.
+     * @returns {HRONParseType|any} The parsed JavaScript object or full parse output.
+     * @throws {Error} If tokenization, AST building, or translation fails due to invalid HRON syntax.
+     */
     public parse = (input: string): HRONParseType | any => this.toObject(this.build(this.tokenize(input)));
 
-    // Converts a JavaScript object into a full HRON string
+    /**
+     * Converts a JavaScript object into a HRON-formatted string.
+     *
+     * @example
+     * const data = {data: {users: [{ id: 1, name: "Alice", role: "admin", verified: false, hobbies: [ "sport", "run", "game" ] },{ id: 2, name: "Bob", role: "user", verified: false, hobbies: [ "swim", "travel", "code" ] }]}}
+     * console.log(hron.stringify(data));
+     * 
+     * @param {any} object - The JavaScript value to serialize into HRON format.
+     * @param {HRONParseOptions} [options={ indent: 2, colorize: true }] - Formatting options such as indentation size and color output.
+     * @returns {string} A valid HRON string representation of the provided object.
+     * @throws {Error} If the object contains unsupported values or fails during HRON serialization.
+     */
     public stringify = (object: any, options: HRONParseOptions = { indent: 2, colorize: true }): string => this.toHRON(object, options);
 }
 

@@ -1,41 +1,44 @@
 {
   "name": "hron-format",
+  "version": "1.0.0",
   "author": {
     "name": "Naufal Hanif",
     "email": "naufal.hanif2525@gmail.com",
     "url": "https://falhnf.my.id"
   },
-  "description": "HRON (Hierarchical Reference Object Notation) is a structured text format focused on being readable, compact, and fast to parse.",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.js",
-  "version": "1.0.0",
-  "keywords": ["hron", "tokenization", "serialization", "data-format", "object-notation"],
   "repository": {
     "url": "https://github.com/naufalhanif25/hron-format.git"
   },
-  "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@toon-format/toon": "^2.0.1",
     "@types/bun": "latest",
     "@types/node": "^24.10.1",
+    "chalk": "^5.6.2",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
+    "fast-xml-parser": "^5.3.2",
     "globals": "^16.5.0",
     "jiti": "^2.6.1",
     "pkg": "^5.8.1",
+    "tsup": "^8.5.1",
     "typescript-eslint": "^8.48.1"
   },
   "peerDependencies": {
     "typescript": "^5.9.3"
   },
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "description": "HRON (Hierarchical Reference Object Notation) is a structured text format focused on being readable, compact, and fast to parse.",
+  "keywords": ["hron", "tokenization", "serialization", "data-format", "object-notation"],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "bun run index.ts",
     "bench": "bun run test/benchmark.test.ts",
@@ -46,10 +49,5 @@
     "pkgbuild": "tsup"
   },
   "type": "module",
-  "dependencies": {
-    "@toon-format/toon": "^2.0.1",
-    "chalk": "^5.6.2",
-    "fast-xml-parser": "^5.3.2",
-    "tsup": "^8.5.1"
-  }
+  "types": "./dist/index.d.js"
 }

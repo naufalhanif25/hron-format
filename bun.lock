@@ -4,21 +4,19 @@
   "workspaces": {
     "": {
       "name": "hron-format",
-      "dependencies": {
-        "@toon-format/toon": "^2.0.1",
-        "chalk": "^5.6.2",
-        "fast-xml-parser": "^5.3.2",
-        "tsup": "^8.5.1",
-      },
       "devDependencies": {
         "@eslint/js": "^9.39.1",
+        "@toon-format/toon": "^2.0.1",
         "@types/bun": "latest",
         "@types/node": "^24.10.1",
+        "chalk": "^5.6.2",
         "esbuild": "^0.27.1",
         "eslint": "^9.39.1",
+        "fast-xml-parser": "^5.3.2",
         "globals": "^16.5.0",
         "jiti": "^2.6.1",
         "pkg": "^5.8.1",
+        "tsup": "^8.5.1",
         "typescript-eslint": "^8.48.1",
       },
       "peerDependencies": {

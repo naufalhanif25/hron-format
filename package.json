@@ -36,7 +36,6 @@
     "typescript": "^5.9.3"
   },
   "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "bun run index.ts",
     "bench": "bun run test/benchmark.test.ts",

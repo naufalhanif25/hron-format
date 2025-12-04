@@ -6,12 +6,11 @@ HRON (Hierarchical Reference Object Notation) is a structured text format design
 
 ## Table of Contents
 
-1. [Why HRON?](#why-hron)
-2. [Syntax Comparison Examples](#syntax-comparison-examples)
-3. [Usage of CLI Tool](#usage-of-cli-tool)
-4. [Usage in JavaScript / TypeScript](#usage-in-javascript--typescript)
-5. [Benchmark Results](#benchmark-results)
-6. [License](#license)
+* [Why HRON?](#why-hron)
+* [Syntax Comparison Examples](#syntax-comparison-examples)
+* [Quick Start](#quick-start)
+* [Benchmark Results](#benchmark-results)
+* [License](#license)
 
 ---
 
@@ -161,7 +160,9 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 
 ---
 
-## Usage of CLI Tool
+## Quick Start
+
+### CLI Tool
 
 This section provides a basic example of how the CLI-based HRON tool is used.
 
@@ -177,13 +178,13 @@ hron --decode data.hron data.json
 cat data.hron | hron --decode
 ```
 
-See `bin/hron` to download the hron cli tool executable or download it directly [here](https://github.com/naufalhanif25/hron-format/raw/refs/heads/main/bin/hron?download=).
+See `bin` directory to download the hron cli tool executable.
 
-## Usage in JavaScript / TypeScript
+### JavaScript / TypeScript
 
 This section provides a basic example of how HRON is used in a JavaScript or TypeScript environment.
 
-### Parsing HRON
+#### Parsing HRON
 
 The following example shows how to read and parse an HRON file into a JavaScript object.
 
@@ -210,14 +211,13 @@ console.log(hron.parse(data).object);
 
 ```
 
-### Converting JavaScript Object to HRON
+#### Converting JavaScript Object to HRON
 
 The following example shows how JavaScript object can be converted into an HRON representation.
 
 ```ts
 import { hron } from "./src/hron";
 
-// Input must contain a single root object that holds all nested data.
 const data = {
   data: {
     users: [
@@ -242,6 +242,9 @@ console.log(hron.stringify(data));
 //   ]
 // }
 ```
+
+> [!NOTE]
+> Input must contain a single root object that holds all nested data.
 
 ---
 

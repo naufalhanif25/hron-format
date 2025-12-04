@@ -1,4 +1,4 @@
-import { HRON } from "../src/hron";
+import { hron } from "../src/hron";
 import { decode as toonDecode, encode as toonEncode } from "@toon-format/toon";
 import data from "../public/example.json";
 import chalk from "chalk";
@@ -14,9 +14,6 @@ const calcAverage = (data: number[]) => {
     const sum = data.reduce((a, b) => a + b, 0);
     return sum / data.length;
 };
-
-// HRON
-const hron = new HRON();
 
 // XML Parser & Builder
 const xmlParser = new XMLParser();

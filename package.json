@@ -9,14 +9,13 @@
   "repository": {
     "url": "https://github.com/naufalhanif25/hron-format.git"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@toon-format/toon": "^2.0.1",
     "@types/bun": "latest",
     "@types/node": "^24.10.1",
-    "chalk": "^5.6.2",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
     "fast-xml-parser": "^5.3.2",
@@ -30,8 +29,9 @@
     "typescript": "^5.9.3"
   },
   "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
   },
   "description": "HRON (Hierarchical Reference Object Notation) is a structured text format focused on being readable, compact, and fast to parse.",
   "keywords": [
@@ -55,5 +55,8 @@
     "pkgbuild": "tsup"
   },
   "type": "module",
-  "types": "./dist/index.d.js"
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "chalk": "^5.6.2"
+  }
 }

@@ -4,12 +4,14 @@
   "workspaces": {
     "": {
       "name": "hron-format",
+      "dependencies": {
+        "chalk": "^5.6.2",
+      },
       "devDependencies": {
         "@eslint/js": "^9.39.1",
         "@toon-format/toon": "^2.0.1",
         "@types/bun": "latest",
         "@types/node": "^24.10.1",
-        "chalk": "^5.6.2",
         "esbuild": "^0.27.1",
         "eslint": "^9.39.1",
         "fast-xml-parser": "^5.3.2",

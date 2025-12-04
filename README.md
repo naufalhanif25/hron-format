@@ -169,7 +169,9 @@ Below is a simple guide to help you install and use the HRON CLI tool. Follow th
 #### Installation
 
 ```shell
+# Change the permission to executable
 chmod +x install.sh
+# Run the installation script
 ./install.sh bin/hron-linux
 ```
 

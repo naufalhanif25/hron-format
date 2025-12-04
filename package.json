@@ -11,9 +11,11 @@
     "@eslint/js": "^9.39.1",
     "@types/bun": "latest",
     "@types/node": "^24.10.1",
+    "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "jiti": "^2.6.1",
+    "pkg": "^5.8.1",
     "typescript-eslint": "^8.48.1"
   },
   "peerDependencies": {
@@ -26,7 +28,7 @@
     "bench": "bun run test/benchmark.test.ts",
     "lint": "eslint .",
     "cli": "bun run src/cli.ts",
-    "build": "bun build src/cli.ts --compile --outfile bin/hron",
+    "build": "npx esbuild src/cli.ts --bundle --platform=node --format=cjs --target=node18 --outfile=dist/cli.cjs; npx pkg dist/cli.cjs --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --output bin/hron",
     "test": "bun test test/unit.test.ts"
   },
   "type": "module",

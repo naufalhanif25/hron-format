@@ -1,5 +1,6 @@
 import { hron } from "./hron";
 import chalk from "chalk";
+import { promises as fs } from "fs";
 import data from "../package.json";
 
 type HRONOption = {
@@ -16,7 +17,6 @@ const VERSION = data.version;
 const readStdin = async (): Promise<string | undefined> => {
     if (process.stdin.isTTY) return undefined;
     const chunks: Buffer[] = [];
-
     return new Promise((resolve, reject) => {
         process.stdin.on("data", (chunk) => chunks.push(chunk));
         process.stdin.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
@@ -29,15 +29,10 @@ const showHelpMessage = (optionList: Record<string, HRONOption>): void => {
     console.log(`${chalk.bold.yellow("HRON")} is a structured text format focused on being readable, compact, and fast to parse. ${chalk.gray(`(${VERSION})`)}\n`);
     console.log(`${chalk.bold(`Usage: hron ${chalk.blue("[options] [args...]")}`)}\n`);
     console.log(chalk.bold("Options:"));
-
     for (const optionDetail of Object.values(optionList)) {
         console.log(`  ${chalk.blue(Array.from(optionDetail.options).join(chalk.white(", ")))}\t\t\t${optionDetail.description}`);
-
-        if (optionDetail.example) {
-            console.log(`\t\t\t\t${chalk.gray("\u2570\u2500")}${chalk.bold("Example:")} ${chalk.gray(optionDetail.example.join(chalk.white(", ")))}`);
-        }
+        if (optionDetail.example) console.log(`\t\t\t\t${chalk.gray("\u2570\u2500")}${chalk.bold("Example:")} ${chalk.gray(optionDetail.example.join(chalk.white(", ")))}`);
     }
-
     console.log(`\n${chalk.bold("Learn more about HRON:")}\t\t${chalk.yellow("https://github.com/naufalhanif25/hron-format.git")}`)
 }
 
@@ -66,9 +61,7 @@ const argHandler = (input?: string): void => {
                 else {
                     const optArgs = argvs.slice(1);
                     if (optArgs.length < 2) showHelpMessage(optionList);
-                    else {
-                        await Bun.write(optArgs[1]!, hron.stringify(JSON.parse(await Bun.file(optArgs[0]!).text()), { indent: 2, colorize: false }));
-                    }
+                    else await fs.writeFile(optArgs[1]!, hron.stringify(JSON.parse(await fs.readFile(optArgs[0]!, "utf-8")), { indent: 2, colorize: false }));
                 }
             },
             example: ["cat data.json | hron --encode", "hron --encode data.json data.hron"],
@@ -81,24 +74,20 @@ const argHandler = (input?: string): void => {
                 else {
                     const optArgs = argvs.slice(1);
                     if (optArgs.length < 2) showHelpMessage(optionList);
-                    else {
-                        await Bun.write(optArgs[1]!, JSON.stringify(hron.parse(await Bun.file(optArgs[0]!).text()), null, 2));
-                    }
+                    else await fs.writeFile(optArgs[1]!, JSON.stringify(hron.parse(await fs.readFile(optArgs[0]!, "utf-8")), null, 2));
                 }
             },
             example: ["cat data.hron | hron --decode", "hron --decode data.hron data.json"],
         }
     }
-
     for (const optionDetail of Object.values(optionList)) {
         if (optionDetail.options.has(argv || "")) {
             optionDetail.action();
             return;
         }
     }
-
     showHelpMessage(optionList);
 }
 
 // Reads stdin and starts argument handling
-argHandler(await readStdin());
+(async () => argHandler(await readStdin()))();

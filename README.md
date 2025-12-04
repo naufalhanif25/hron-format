@@ -195,14 +195,26 @@ You can find the HRON CLI executables inside the `bin` directory.
 
 ### JavaScript / TypeScript
 
-This section provides a basic example of how HRON is used in a JavaScript or TypeScript environment.
+This section provides an installation guide and basic examples of how HRON is used in a JavaScript or TypeScript environment.
+
+#### Installation
+```shell
+# Installation using NPM
+npm install hron-format
+
+# Installation using yarn
+yarn add hron-format
+
+# Installation using bun
+bun add hron-format
+```
 
 #### Parsing HRON
 
 The following example shows how to read and parse an HRON file into a JavaScript object.
 
 ```ts
-import { hron } from "./src/hron";
+import { hron } from "hron-format";
 
 const data = `
 data{users[{id,name,role,verified,hobbies[]}]}: {
@@ -229,7 +241,7 @@ console.log(hron.parse(data).object);
 The following example shows how JavaScript object can be converted into an HRON representation.
 
 ```ts
-import { hron } from "./src/hron";
+import { hron } from "hron-format";
 
 const data = {
   data: {

@@ -6,7 +6,7 @@ export type HRONValueType = string | number | boolean | null;
 export type HRONToken = { type: HRONTokenType, value: HRONValueType };
 export type HRONParseType = { tokens?: HRONToken[], document?: HRONASTDocumentNode, object?: any };
 
-class HRON extends HRONASTBuilder {
+export class HRON extends HRONASTBuilder {
     private validSymbols: Set<string> = new Set(["{", "}", "[", "]", ",", ".", ":"]);
 
     // Returns ASCII code of a character or value depending on input type

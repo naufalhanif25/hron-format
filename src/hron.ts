@@ -1,13 +1,12 @@
 import { HRONASTBuilder, type HRONASTDocumentNode } from "./builder";
-import { HRONASTTranslator, type HRONParseOptions } from "./translator";
+import { type HRONParseOptions } from "./translator";
 
 export type HRONTokenType = "IDENT" | "NUMBER" | "STRING" | "BOOL" | "SYMBOL" | "NULL";
 export type HRONValueType = string | number | boolean | null;
 export type HRONToken = { type: HRONTokenType, value: HRONValueType };
 export type HRONParseType = { tokens?: HRONToken[], document?: HRONASTDocumentNode, object?: any };
-export type HRONConstructor<T = {}> = new (...args: any[]) => T;
 
-export class HRON extends HRONASTBuilder(HRONASTTranslator(class {})) {
+class HRON extends HRONASTBuilder {
     private validSymbols: Set<string> = new Set(["{", "}", "[", "]", ",", ".", ":"]);
 
     // Returns ASCII code of a character or value depending on input type

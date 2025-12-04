@@ -29,9 +29,11 @@
     "typescript": "^5.9.3"
   },
   "exports": {
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
   },
   "description": "HRON (Hierarchical Reference Object Notation) is a structured text format focused on being readable, compact, and fast to parse.",
   "keywords": [

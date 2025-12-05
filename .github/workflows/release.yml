@@ -12,10 +12,13 @@ jobs:
         permissions:
             contents: write
             packages: write
+            id-token: write
 
         steps:
           - name: Checkout
             uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
 
           - name: Install Bun
             uses: oven-sh/setup-bun@v1
@@ -41,22 +44,20 @@ jobs:
               echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
               echo "New version: $NEW_VERSION"
 
-          - name: Commit and push updated
+          - name: Commit and push updates
             run: |
               git add package.json package-lock.json || true
               git commit -m "chore: release v${VERSION}" || true
               git pull --rebase origin main
               git push origin main
 
-          - name: Publish to NPM
-            run: npm publish
-            env:
-              NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
           - name: Create Tag
             run: |
               git tag "v${VERSION}"
               git push origin "v${VERSION}"
+
+          - name: Publish to NPM
+            run: npm publish --provenance --access public
 
           - name: Create GitHub Release
             uses: softprops/action-gh-release@v2

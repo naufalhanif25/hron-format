@@ -40,6 +40,7 @@
     "hron",
     "tokenization",
     "serialization",
+    "parser",
     "data-format",
     "object-notation"
   ],
@@ -49,12 +50,12 @@
   },
   "scripts": {
     "start": "bun run index.ts",
-    "bench": "bun run test/benchmark.test.ts",
+    "benchmark": "bun run test/benchmark.test.ts",
     "lint": "eslint .",
     "cli": "bun run src/cli.ts",
-    "build": "npx esbuild src/cli.ts --bundle --platform=node --format=cjs --target=node18 --outfile=dist/cli.cjs; npx pkg dist/cli.cjs --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --output bin/hron",
+    "compile": "npx esbuild src/cli.ts --bundle --platform=node --format=cjs --target=node18 --outfile=dist/cli.cjs; npx pkg dist/cli.cjs --targets node18-linux-x64,node18-macos-x64,node18-win-x64 --output bin/hron",
     "test": "bun test test/unit.test.ts",
-    "pkgbuild": "tsup"
+    "build": "tsup"
   },
   "type": "module",
   "types": "./dist/index.d.ts",

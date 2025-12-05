@@ -58,3 +58,19 @@ jobs:
               run: |
                   git tag "v$VERSION"
                   git push origin "v$VERSION"
+
+            - name: Setup Node for OIDC Publish
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: "https://registry.npmjs.org"
+
+            - name: Publish to NPM
+              run: npm publish --provenance --access public
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: "v${{ env.VERSION }}"
+                  name: "v${{ env.VERSION }}"
+                  generate_release_notes: true

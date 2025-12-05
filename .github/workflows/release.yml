@@ -64,18 +64,20 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: 20
-                registry-url: https://registry.npmjs.org
+                registry-url: https://registry.npmjs.org/
                 always-auth: true
                 token: ${{ secrets.NPM_TOKEN }}
             
-            - name: Configure NPM token
-              run: echo "//registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            - name: Configure NPM registry & token
+              run: |
+                  npm config set @naufalhanif:registry https://registry.npmjs.org/
+                  npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+
+            - name: Check NPM username
+              run: npm whoami
 
             - name: Publish to NPM
               run: npm publish --provenance --access public
-
-            - name: Remove NPM token
-              run: rm -f ~/.npmrc
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2

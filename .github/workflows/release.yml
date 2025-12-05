@@ -59,14 +59,21 @@ jobs:
                   git tag "v$VERSION"
                   git push origin "v$VERSION"
 
-            - name: Setup Node for OIDC Publish
+            - name: Setup Node for Publish
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
-                  registry-url: "https://registry.npmjs.org"
-
+                node-version: 20
+                registry-url: "https://registry.npmjs.org"
+                scope: ""
+            
+            - name: Authenticate with NPM
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            
             - name: Publish to NPM
               run: npm publish --provenance --access public
+
+            - name: Clean npm credentials
+              run: rm ~/.npmrc
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2

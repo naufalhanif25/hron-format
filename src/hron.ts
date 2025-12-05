@@ -113,7 +113,7 @@ export class HRON extends HRONASTBuilder {
      *
      * @example
      * const data = `data{users[{id,name,role,verified,hobbies[]}]}: {[{1,'Alice','admin',false,['sport','run','game']},{2,'Bob','user',false,['swim','travel','code']}]}`
-     * console.log(hron.parse(data).object);
+     * console.log(hron.parse(data));
      * 
      * @param {string} input - The HRON string to parse.
      * @returns {HRONParseType|any} The parsed JavaScript object or full parse output.

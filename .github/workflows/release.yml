@@ -2,8 +2,7 @@ name: Release & Publish
 
 on:
     push:
-        tags:
-          - "v*"
+        branches: ["main"]
 
 permissions:
     contents: write
@@ -11,47 +10,46 @@ permissions:
     id-token: write
 
 jobs:
-    publish:
-        name: Publish to NPM & GitHub Release
+    release:
+        name: Auto bump version & create tag
         environment: production
         runs-on: ubuntu-latest
 
         steps:
-          - name: Checkout
-            uses: actions/checkout@v4
-            with:
-              fetch-depth: 0
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-          - name: Install Bun
-            uses: oven-sh/setup-bun@v1
+            - name: Install Bun
+              uses: oven-sh/setup-bun@v1
 
-          - name: Install dependencies
-            run: bun install --retry=5
-            env:
-              NPM_CONFIG_REGISTRY: "https://registry.npmjs.org"
+            - name: Install dependencies
+              run: bun install --retry=5
 
-          - name: Build project
-            run: bun run build
+            - name: Build project
+              run: bun run build
 
-          - name: Sync version from tag
-            run: |
-              VERSION="${GITHUB_REF#refs/tags/}"
-              VERSION="${VERSION#v}"
-              echo "Using version: $VERSION"
-              bunx npm version "$VERSION" --no-git-tag-version
+            - name: Configure Git
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          - name: Setup Node for OIDC Publish
-            uses: actions/setup-node@v4
-            with:
-              node-version: 20
-              registry-url: "https://registry.npmjs.org"
+            - name: Bump version (patch)
+              id: bump
+              run: |
+                  NEW_VERSION=$(npm version patch --no-git-tag-version)
+                  NEW_VERSION=${NEW_VERSION#v}
+                  echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+                  echo "version without v: $NEW_VERSION"
 
-          - name: Publish to NPM
-            run: npm publish --provenance --access public
+            - name: Commit version bump
+              run: |
+                  git add package.json package-lock.json || true
+                  git commit -m "chore: bump version to $VERSION" || true
+                  git push origin main
 
-          - name: Create GitHub Release
-            uses: softprops/action-gh-release@v2
-            with:
-              tag_name: ${{ github.ref_name }}
-              name: ${{ github.ref_name }}
-              generate_release_notes: true
+            - name: Create and push tag
+              run: |
+                  git tag "v$VERSION"
+                  git push origin "v$VERSION"

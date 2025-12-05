@@ -3,6 +3,7 @@
 /test
 /bin
 /public
+/.github
 
 tsconfig.json
 tsup.config.ts

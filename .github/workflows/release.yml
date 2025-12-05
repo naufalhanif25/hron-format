@@ -11,7 +11,7 @@ permissions:
 
 jobs:
     release:
-        name: Auto bump version & create tag
+        name: Publish to NPM & GitHub Release
         environment: production
         runs-on: ubuntu-latest
 

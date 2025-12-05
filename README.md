@@ -212,7 +212,7 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 }
 `
 
-console.log(hron.parse(data).object);
+console.log(hron.parse(data));
 // {
 //   data: {
 //     users: [

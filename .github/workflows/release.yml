@@ -51,6 +51,11 @@ jobs:
               git pull --rebase origin main
               git push origin main
 
+          - name: Prepare tag
+            run: |
+              git tag -d "${VERSION}" || true
+              git push --delete origin "${VERSION}" || true
+          
           - name: Create Tag
             run: |
               git tag "${VERSION}"

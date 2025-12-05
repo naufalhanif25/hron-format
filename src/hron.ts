@@ -6,6 +6,12 @@ export type HRONValueType = string | number | boolean | null;
 export type HRONToken = { type: HRONTokenType, value: HRONValueType };
 export type HRONParseType = { tokens?: HRONToken[], document?: HRONASTDocumentNode, object?: any };
 
+/**
+ * Class representing an HRON parser and serializer.
+ * Return a new HRON instance.
+ * 
+ * @class HRON
+ */
 export class HRON extends HRONASTBuilder {
     private validSymbols: Set<string> = new Set(["{", "}", "[", "]", ",", ".", ":"]);
 
@@ -130,5 +136,10 @@ export class HRON extends HRONASTBuilder {
     public stringify = (object: any, options: HRONParseOptions = { indent: 2, colorize: true }): string => this.toHRON(object, options);
 }
 
-// Main HRON object
-export const hron = new HRON();
+/**
+ * Main HRON object instance.
+ *
+ * @const
+ * @type {HRON}
+ */
+export const hron: HRON = new HRON();

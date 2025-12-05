@@ -77,7 +77,7 @@ jobs:
               run: npm whoami
 
             - name: Publish to NPM
-              run: npm publish --provenance --access public
+              run: npm publish --registry https://registry.npmjs.org/
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2

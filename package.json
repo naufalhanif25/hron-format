@@ -48,6 +48,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "bin": {
+    "hron": "./bin/hron.js"
+  },
   "scripts": {
     "start": "bun run index.ts",
     "benchmark": "bun run test/benchmark.test.ts",

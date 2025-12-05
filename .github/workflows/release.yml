@@ -68,8 +68,14 @@ jobs:
                 always-auth: true
                 token: ${{ secrets.NPM_TOKEN }}
             
+            - name: Configure NPM token
+              run: echo "//registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
             - name: Publish to NPM
               run: npm publish --provenance --access public
+
+            - name: Remove NPM token
+              run: rm -f ~/.npmrc
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2

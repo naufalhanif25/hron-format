@@ -45,6 +45,7 @@ jobs:
             run: |
               git add package.json package-lock.json || true
               git commit -m "chore: release v${VERSION}" || true
+              git pull --rebase origin main
               git push origin main
 
           - name: Publish to NPM

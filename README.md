@@ -164,34 +164,21 @@ data{users[{id,name,role,verified,hobbies[]}]}: {
 
 ### CLI Tool
 
-Below is a simple guide to help you install and use the HRON CLI tool. Follow the installation step first, then try the encoding and decoding commands.
-
-#### Installation
-
-```shell
-# Change the permission to executable
-chmod +x install.sh
-# Run the installation script
-./install.sh bin/hron-linux
-```
-
-Make sure you have downloaded the installation script `install.sh`.
+This section provides a basic examples of how the HRON CLI tool is used. You can try the HRON CLI tool instantly with npx.
 
 #### Usage
 
 ```shell
 # Encode JavaScript objects into HRON string
-hron --encode data.json data.hron
+npx hron-format --encode data.json data.hron
 # or by using pipe from stdin
-cat data.json | hron --encode
+cat data.json | npx hron-format --encode
 
 # Decode HRON string into JavaScript objects
-hron --decode data.hron data.json
+npx hron-format --decode data.hron data.json
 # or by using pipe from stdin
-cat data.hron | hron --decode
+cat data.hron | npx hron-format --decode
 ```
-
-You can find the HRON CLI executables inside the `bin` directory.
 
 ### JavaScript / TypeScript
 

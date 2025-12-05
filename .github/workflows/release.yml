@@ -89,9 +89,17 @@ jobs:
             - name: Publish to NPM
               run: npm publish --registry https://registry.npmjs.org/
 
+            - name: Read release notes from RELEASE.md
+              id: release_notes
+              run: |
+                NOTES=$(cat RELEASE.md)
+                echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
+                echo "$NOTES" >> $GITHUB_ENV
+                echo "EOF" >> $GITHUB_ENV
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
                   tag_name: "v${{ env.VERSION }}"
                   name: "v${{ env.VERSION }}"
-                  generate_release_notes: true
+                  body: ${{ env.RELEASE_BODY }}

@@ -47,14 +47,14 @@ jobs:
           - name: Commit and push updates
             run: |
               git add package.json package-lock.json || true
-              git commit -m "chore: release v${VERSION}" || true
+              git commit -m "chore: release ${VERSION}" || true
               git pull --rebase origin main
               git push origin main
 
           - name: Create Tag
             run: |
-              git tag "v${VERSION}"
-              git push origin "v${VERSION}"
+              git tag "${VERSION}"
+              git push origin "${VERSION}"
 
           - name: Publish to NPM
             run: npm publish --provenance --access public
@@ -62,6 +62,6 @@ jobs:
           - name: Create GitHub Release
             uses: softprops/action-gh-release@v2
             with:
-              tag_name: "v${{ env.VERSION }}"
-              name: "v${{ env.VERSION }}"
+              tag_name: ${{ env.VERSION }}
+              name: ${{ env.VERSION }}
               generate_release_notes: true

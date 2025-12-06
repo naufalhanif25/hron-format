@@ -1,4 +1,4 @@
 #### Features
 
-* HRON CLI tool can be used instantly using `npx hron-format`.
-* Automatically read release notes from `CHANGELOG.md` for `.github/workflows/release.yml`
+* Support for line comments in HRON using the `#` prefix.
+* Comment tokens are now recognized during tokenization and will be skipped.

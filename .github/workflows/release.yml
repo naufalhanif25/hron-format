@@ -89,10 +89,10 @@ jobs:
             - name: Publish to NPM
               run: npm publish --registry https://registry.npmjs.org/
 
-            - name: Read release notes from RELEASE.md
+            - name: Read release notes from CHANGELOG.md
               id: release_notes
               run: |
-                NOTES=$(cat RELEASE.md)
+                NOTES=$(cat CHANGELOG.md)
                 echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
                 echo "$NOTES" >> $GITHUB_ENV
                 echo "EOF" >> $GITHUB_ENV

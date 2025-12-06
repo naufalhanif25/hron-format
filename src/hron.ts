@@ -48,6 +48,9 @@ export class HRON extends HRONASTBuilder {
     // Determines if a string matches null literal
     private isNull = (input: string): boolean => input === "null";
 
+    // Checks if a character is a comment symbol
+    private isComment = (input: string): boolean => input === "#";
+
     // Token creation helpers
     private readonly createSymbolToken = (value: string): HRONToken => ({ type: "SYMBOL", value });
     private readonly createStringToken = (value: string): HRONToken => ({ type: "STRING", value });
@@ -65,6 +68,11 @@ export class HRON extends HRONASTBuilder {
             const char = input[position]!;
             if (this.isWhitespace(char)) {
                 position++;
+                continue;
+            }
+            if (this.isComment(char)) {
+                const newlineIndex = input.indexOf("\n", position);
+                position = newlineIndex === -1 ? input.length : newlineIndex + 1;
                 continue;
             }
             if (this.validSymbols.has(char)) {

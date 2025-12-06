@@ -49,7 +49,7 @@
     "access": "public"
   },
   "bin": {
-    "hron": "./bin/hron.js"
+    "hron-format": "./bin/hron.js"
   },
   "scripts": {
     "start": "bun run index.ts",

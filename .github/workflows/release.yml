@@ -53,12 +53,6 @@ jobs:
                   echo "VERSION=$VERSION" >> $GITHUB_ENV
                   echo "Detected version: $VERSION"
 
-            - name: Commit version bump
-              run: |
-                  git add -A
-                  git commit -m "chore: bump version to $VERSION" || echo "No changes to commit"
-                  git push origin main
-
             - name: Delete tag if exists
               run: |
                   git tag -d "v$VERSION" || true

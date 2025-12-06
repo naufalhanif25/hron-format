@@ -150,6 +150,7 @@ data:
 HRON expresses data structures through separate key and value declarations, ensuring data remains compact yet structured.
 
 ```
+# List of application users and their attributes
 data{users[{id,name,role,verified,hobbies[]}]}: {
     [
         {1,'Alice','admin',false,['sport','run','game']},
@@ -204,6 +205,7 @@ The following example shows how to read and parse an HRON file into a JavaScript
 import { hron } from "hron-format";
 
 const data = `
+# List of application users and their attributes
 data{users[{id,name,role,verified,hobbies[]}]}: {
   [
     {1,'Alice','admin',false,['sport','run','game']},
@@ -220,7 +222,6 @@ console.log(hron.parse(data));
 //     ],
 //   },
 // }
-
 ```
 
 #### Converting JavaScript Object to HRON

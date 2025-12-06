@@ -46,13 +46,12 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: Bump version (patch)
-              id: bump
+            - name: Read version from package.json
+              id: pkg
               run: |
-                  NEW_VERSION=$(npm version patch --no-git-tag-version)
-                  NEW_VERSION=${NEW_VERSION#v}
-                  echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-                  echo "version without v: $NEW_VERSION"
+                  VERSION=$(jq -r '.version' package.json)
+                  echo "VERSION=$VERSION" >> $GITHUB_ENV
+                  echo "Detected version: $VERSION"
 
             - name: Commit version bump
               run: |

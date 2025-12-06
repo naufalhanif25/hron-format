@@ -170,14 +170,14 @@ This section provides a basic examples of how the HRON CLI tool is used. You can
 
 ```shell
 # Encode JavaScript objects into HRON string
-npx hron --encode data.json data.hron
+npx hron-format --encode data.json data.hron
 # or by using pipe from stdin
-cat data.json | npx hron --encode
+cat data.json | npx hron-format --encode
 
 # Decode HRON string into JavaScript objects
-npx hron --decode data.hron data.json
+npx hron-format --decode data.hron data.json
 # or by using pipe from stdin
-cat data.hron | npx hron --decode
+cat data.hron | npx hron-format --decode
 ```
 
 ### JavaScript / TypeScript

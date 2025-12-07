@@ -1,4 +1,4 @@
 #### Features
 
-* Support for line comments in HRON using the `#` prefix.
-* Comment tokens are now recognized during tokenization and will be skipped.
+* Allows customization of indentation size when encoding or decoding HRON.
+* Enables colorized HRON output string to improve readability in the terminal.

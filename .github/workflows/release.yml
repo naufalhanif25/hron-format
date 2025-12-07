@@ -28,20 +28,14 @@ jobs:
 
             - name: Install Git LFS
               run: |
-                sudo apt-get install git-lfs
-                git lfs install
-                git lfs pull
+                  sudo apt-get install git-lfs
+                  git lfs install
+                  git lfs pull
 
             - name: Install dependencies
               run: bun install --retry=5
 
-            - name: Compile CLI tool
-              run: bun run compile
-
-            - name: Build project
-              run: bun run build
-
-            - name: Configure Git
+            - name: Configure GitHub bot
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -52,6 +46,20 @@ jobs:
                   VERSION=$(jq -r '.version' package.json)
                   echo "VERSION=$VERSION" >> $GITHUB_ENV
                   echo "Detected version: $VERSION"
+
+            - name: Compile CLI tool
+              run: bun run compile
+
+            - name: Build project
+              run: bun run build
+
+            - name: Commit new changes
+              run: | 
+                  git add bin/
+                  git commit -m "chore: Update binaries to version $VERSION" || echo "No changes to commit" 
+                  git add -A 
+                  git commit -m "chore: bump version to $VERSION" || echo "No changes to commit" 
+                  git push origin main
 
             - name: Delete tag if exists
               run: |
@@ -66,10 +74,10 @@ jobs:
             - name: Setup Node for Publish
               uses: actions/setup-node@v4
               with:
-                node-version: 20
-                registry-url: https://registry.npmjs.org/
-                always-auth: true
-                token: ${{ secrets.NPM_TOKEN }}
+                  node-version: 20
+                  registry-url: https://registry.npmjs.org/
+                  always-auth: true
+                  token: ${{ secrets.NPM_TOKEN }}
             
             - name: Configure NPM registry & token
               run: |

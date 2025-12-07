@@ -21,9 +21,9 @@ jobs:
 
             - name: Install Git LFS
               run: |
-                sudo apt-get install git-lfs
-                git lfs install
-                git lfs pull
+                  sudo apt-get install git-lfs
+                  git lfs install
+                  git lfs pull
 
             - name: Install dependencies
               run: bun install --retry=5

@@ -114,7 +114,7 @@ const argHandler = (input?: string): void => {
         },
         colorize: {
             options: new Set(["--colorize"]),
-            description: "Colorize output HRON string",
+            description: "Colorize HRON output string",
             action: () => colorize = true,
             example: [`cat data.hron | ${NAME} --decode --colorize`],
             pending: false,

@@ -46,7 +46,7 @@ const showHelpMessage = (optionList: Record<string, HRONOptionDetail>): void => 
     console.log(`${chalk.bold(`${chalk.underline("Usage")}: ${chalk.reset(NAME)} ${chalk.bold.cyan("[options] [args]")}`)}\n`);
     console.log(chalk.bold(`${chalk.underline("Options")}:`));
     for (const optionDetail of Object.values(optionList)) {
-        console.log(`  ${chalk.cyan(Array.from(optionDetail.options).join(chalk.white(", ")))}\t\t\t${optionDetail.description}${optionDetail.default && " " + chalk.yellow(`(default is ${optionDetail.default})`)}`);
+        console.log(`  ${chalk.cyan(Array.from(optionDetail.options).join(chalk.white(", ")))}\t\t\t${optionDetail.description}${optionDetail.default ? " " + chalk.yellow(`(default: ${optionDetail.default})`) : ""}`);
         if (optionDetail.example) console.log(`\t\t\t\t${chalk.gray("\u2570\u2500")}${chalk.bold("Example:")} ${chalk.gray(optionDetail.example.join(chalk.white(", ")))}`);
     }
     console.log(`\n${chalk.bold("Learn more about HRON:")}\t\t${chalk.yellow(data.repository.url)}`)

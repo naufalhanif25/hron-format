@@ -1,4 +1,3 @@
-#### Features
+#### Fixed
 
-* Allows customization of indentation size when encoding or decoding HRON.
-* Enables colorized HRON output string to improve readability in the terminal.
+* Handle undefined `default` value as an empty string.

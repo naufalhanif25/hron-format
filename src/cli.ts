@@ -1,16 +1,26 @@
 import { hron } from "./hron";
 import chalk from "chalk";
 import { promises as fs } from "fs";
+import Denque from "denque";
 import data from "../package.json";
 
-type HRONOption = {
-    options: Set<string>,
-    description?: string,
-    action: () => void,
-    example?: string[],
+// Represents parsed CLI option data
+type HRONOptionData = {
+    name: string;
+    value: any;
 }
 
-const NAME = "hron";
+// Defines metadata and behavior for a single CLI option
+type HRONOptionDetail = {
+    options: Set<string>;
+    description: string;
+    default?: number | boolean | string;
+    action: (param?: any) => void;
+    example: string[];
+    pending: boolean;
+}
+
+const NAME = data.name;
 const VERSION = data.version;
 
 // Reads piped stdin input and returns it as a string
@@ -24,69 +34,106 @@ const readStdin = async (): Promise<string | undefined> => {
     });
 }
 
+// Parses CLI argument and returns name/value pair
+const parseOption = (input: string): HRONOptionData => {
+    const optionData = input.split("=");
+    return { name: optionData[0]!, value: optionData[1] || null };
+}
+
 // Displays help and usage information for all available options
-const showHelpMessage = (optionList: Record<string, HRONOption>): void => {
+const showHelpMessage = (optionList: Record<string, HRONOptionDetail>): void => {
     console.log(`${chalk.bold.yellow("HRON")} is a structured text format focused on being readable, compact, and fast to parse. ${chalk.gray(`(${VERSION})`)}\n`);
-    console.log(`${chalk.bold(`Usage: hron ${chalk.blue("[options] [args...]")}`)}\n`);
-    console.log(chalk.bold("Options:"));
+    console.log(`${chalk.bold(`${chalk.underline("Usage")}: ${chalk.reset(NAME)} ${chalk.bold.cyan("[options] [args]")}`)}\n`);
+    console.log(chalk.bold(`${chalk.underline("Options")}:`));
     for (const optionDetail of Object.values(optionList)) {
-        console.log(`  ${chalk.blue(Array.from(optionDetail.options).join(chalk.white(", ")))}\t\t\t${optionDetail.description}`);
+        console.log(`  ${chalk.cyan(Array.from(optionDetail.options).join(chalk.white(", ")))}\t\t\t${optionDetail.description}${optionDetail.default && " " + chalk.yellow(`(default is ${optionDetail.default})`)}`);
         if (optionDetail.example) console.log(`\t\t\t\t${chalk.gray("\u2570\u2500")}${chalk.bold("Example:")} ${chalk.gray(optionDetail.example.join(chalk.white(", ")))}`);
     }
-    console.log(`\n${chalk.bold("Learn more about HRON:")}\t\t${chalk.yellow("https://github.com/naufalhanif25/hron-format.git")}`)
+    console.log(`\n${chalk.bold("Learn more about HRON:")}\t\t${chalk.yellow(data.repository.url)}`)
 }
 
 // Handles CLI arguments and runs the corresponding option action
 const argHandler = (input?: string): void => {
-    const argvs = process.argv.slice(2);
-    const argv: string | undefined = argvs[0];
-    const optionList: Record<string, HRONOption> = {
+    const argValues = process.argv.slice(2);
+    const actionLoop = new Denque<() => void>();
+    const argList: string[] = [];
+
+    let indent = 2;
+    let colorize = false;
+
+    const optionList: Record<string, HRONOptionDetail> = {
         help: {
             options: new Set(["-h", "--help"]),
             description: "Show help message",
             action: () => showHelpMessage(optionList),
-            example: ["hron --help", "hron -h"],
+            example: [`${NAME} --help`, `${NAME} -h`],
+            pending: true,
         },
         version: {
             options: new Set(["-v", "--version"]),
             description: "Show program version information",
             action: () => console.log(`${chalk.bold(NAME)} ${chalk.yellow(VERSION)}`),
-            example: ["hron --version", "hron -v"],
+            example: [`${NAME} --version`, `${NAME} -v`],
+            pending: true,
         },
         encode: {
             options: new Set(["-e", "--encode"]),
             description: "Encode JavaScript objects into HRON string",
             action: async () => {
-                if (input) console.log(hron.stringify(JSON.parse(input), { indent: 2, colorize: false }));
+                if (input) console.log(hron.stringify(JSON.parse(input), { indent, colorize }));
                 else {
-                    const optArgs = argvs.slice(1);
-                    if (optArgs.length < 2) showHelpMessage(optionList);
-                    else await fs.writeFile(optArgs[1]!, hron.stringify(JSON.parse(await fs.readFile(optArgs[0]!, "utf-8")), { indent: 2, colorize: false }));
+                    if (argList.length < 2) showHelpMessage(optionList);
+                    else await fs.writeFile(argList[1]!, hron.stringify(JSON.parse(await fs.readFile(argList[0]!, "utf-8")), { indent, colorize: false }));
                 }
             },
-            example: ["cat data.json | hron --encode", "hron --encode data.json data.hron"],
+            example: [`cat data.json | ${NAME} --encode`, `${NAME} --encode data.json data.hron`],
+            pending: true,
         },
         decode: {
             options: new Set(["-d", "--decode"]),
             description: "Decode HRON string into JavaScript objects",
             action: async () => {
-                if (input) console.log(JSON.stringify(hron.parse(input), null, 2));
+                if (input) console.log(JSON.stringify(hron.parse(input), null, indent));
                 else {
-                    const optArgs = argvs.slice(1);
-                    if (optArgs.length < 2) showHelpMessage(optionList);
-                    else await fs.writeFile(optArgs[1]!, JSON.stringify(hron.parse(await fs.readFile(optArgs[0]!, "utf-8")), null, 2));
+                    if (argList.length < 2) showHelpMessage(optionList);
+                    else await fs.writeFile(argList[1]!, JSON.stringify(hron.parse(await fs.readFile(argList[0]!, "utf-8")), null, indent));
                 }
             },
-            example: ["cat data.hron | hron --decode", "hron --decode data.hron data.json"],
+            example: [`cat data.hron | ${NAME} --decode`, `${NAME} --decode data.hron data.json`],
+            pending: true,
+        },
+        indent: {
+            options: new Set(["--indent"]),
+            description: "Set indentation size",
+            default: 2,
+            action: (data?: HRONOptionData) => {
+                if (data?.value) indent = parseInt(data.value) || indent;
+            },
+            example: [`cat data.hron | ${NAME} --decode --indent=4`, `${NAME} --decode data.hron data.json --indent=4`],
+            pending: false,
+        },
+        colorize: {
+            options: new Set(["--colorize"]),
+            description: "Colorize output HRON string",
+            action: () => colorize = true,
+            example: [`cat data.hron | ${NAME} --decode --colorize`],
+            pending: false,
         }
     }
-    for (const optionDetail of Object.values(optionList)) {
-        if (optionDetail.options.has(argv || "")) {
-            optionDetail.action();
-            return;
+    for (const option of argValues) {
+        if (option.startsWith("-")) {
+            const optionData: HRONOptionData = parseOption(option);
+            for (const optionDetail of Object.values(optionList)) {
+                if (optionDetail.options.has(optionData.name)) {
+                    if (optionDetail.pending) actionLoop.push(() => optionDetail.action(optionData));
+                    else optionDetail.action(optionData);
+                }
+            }
         }
+        else argList.push(option);
     }
-    showHelpMessage(optionList);
+    if (actionLoop.length === 0) actionLoop.push(() => showHelpMessage(optionList));
+    for (const action of actionLoop.toArray()) action();
 }
 
 // Reads stdin and starts argument handling
